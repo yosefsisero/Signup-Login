@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 import Header from './Layout/Header'
 import {
   Button,  
@@ -11,11 +12,29 @@ import {
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const handleSubmit = async (event)=>{
+    event.preventDefault()
+    const jsnoSend = {
+        email,
+        password,
+    };
+    const LOGIN_URL= 'http://localhost:8080/api/v1/login/'
+    try{
+      const res = await axios.post(LOGIN_URL, jsnoSend)
+      console.log(res)
+      localStorage.setItem('app_token', res.data.token)
+      alert('Successful login')
+    } catch(error){
+      alert('Error in login')
+    }
+  }
+
+
   return (
     <>
     <Header />
       <h1 className="mb-4">Login en mi App</h1>
-      <Form className="container" onSubmit={console.log('submit')}>
+      <Form className="container" onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Email</Label>
           <Input

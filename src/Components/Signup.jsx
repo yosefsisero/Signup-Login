@@ -2,18 +2,38 @@ import React, { useState } from "react";
 import Header from "./Layout/Header";
 
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-
+import axios from 'axios';
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleForm = async (event) =>{
+    event.preventDefault()
+    const jsnoSend = {
+      
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+    };
+    const SIGNUP_URL= 'http://localhost:8080/api/v1/signup/'
+    try {
+      await axios.post(SIGNUP_URL, jsnoSend)
+      setFirstName(' ')
+      setLastName('')
+      setEmail(' ')
+      setPassword(' ')
+    }catch(error){
+      alert('Error on signup')
+    }
+  };
 
   return (
     <>
     <Header />
       <h1 className="mb-4">Signup</h1>
-      <Form className="container" onSubmit={console.log("Login")}>
+      <Form className="container" onSubmit={handleForm}>
         <FormGroup>
           <Label>First Name</Label>
           <Input

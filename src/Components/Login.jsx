@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios'
 import Header from './Layout/Header'
 import {
@@ -8,28 +8,31 @@ import {
   Label,  
   Input,
 } from 'reactstrap';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setToken, setIsAuth } = useContext(AuthContext)
+
   const handleSubmit = async (event)=>{
-    event.preventDefault()
-    const jsnoSend = {
-        email,
-        password,
+    event.preventDefault();
+    const jsonSend ={
+      email,
+      password
     };
-    const LOGIN_URL= 'http://localhost:8080/api/v1/login/'
-    try{
-      const res = await axios.post(LOGIN_URL, jsnoSend)
-      console.log(res)
+    const LOGIN_URL= `http://localhost:8080/api/v1/login/`
+
+    try {
+      const res = await axios.post(LOGIN_URL, jsonSend)
       localStorage.setItem('app_token', res.data.token)
-      alert('Successful login')
+      setToken(res.data.token)
+      setIsAuth(true)
+      alert('Succesful Login')
     } catch(error){
-      alert('Error in login')
+      alert('Error in Login')
     }
   }
-
-
   return (
     <>
     <Header />
@@ -62,4 +65,3 @@ const Login = () => {
 }
  
 export default Login;
- 

@@ -23,7 +23,7 @@ function UsersList() {
     {isAuth ? (
       <ul>
       {users.map((user) => (
-        <li>{user.first_name}</li>
+        <li key={user.first_name}>{user.first_name}</li>
       ))}
       </ul>
     ) : (
